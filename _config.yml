@@ -1,0 +1,33 @@
+title: Blog Cogniscion
+description: >-
+  Ideias, notas e aprendizados da Cogniscion.
+author: Cogniscion
+email: ""
+lang: pt-BR
+timezone: America/Sao_Paulo
+
+url: "https://blog.cogniscion.com"
+baseurl: ""
+
+theme: minima
+minima:
+  skin: auto
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+permalink: /:year/:month/:day/:title/
+
+header_pages:
+  - sobre.md
+
+show_excerpts: true
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - .bundle
