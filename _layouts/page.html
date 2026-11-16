@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<article class="page">
+  <div class="wrap narrow">
+    <header class="page-head">
+      <h1>{{ page.title | escape }}</h1>
+      {%- if page.lead %}
+      <p class="lead">{{ page.lead }}</p>
+      {%- endif %}
+    </header>
+    <div class="prose">
+      {{ content }}
+    </div>
+  </div>
+</article>

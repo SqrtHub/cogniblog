@@ -1,0 +1,5 @@
+{%- comment -%} Tempo de leitura estimado (200 palavras/min). Parâmetro: content. {%- endcomment -%}
+{%- assign _words = include.content | strip_html | number_of_words | plus: 199 -%}
+{%- assign _minutes = _words | divided_by: 200 -%}
+{%- if _minutes < 1 -%}{%- assign _minutes = 1 -%}{%- endif -%}
+{{- _minutes }} min de leitura{% comment %}sem quebra de linha final{% endcomment %}

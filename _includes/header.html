@@ -1,0 +1,22 @@
+{%- assign _guides_url = "/guias/" -%}
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <img src="{{ '/assets/img/cogniscion-logo-horizontal-on-dark.svg' | relative_url }}" alt="CogniScion" width="146" height="37">
+      <span class="blog">Blog</span>
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menu" hidden>
+      <svg viewBox="0 0 18 15" width="18" height="15" aria-hidden="true" focusable="false"><path fill="#FFFFFF" d="M0 1.5h18v2H0zM0 6.5h18v2H0zM0 11.5h18v2H0z"/></svg>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Principal">
+      <a href="{{ '/' | relative_url }}"{% if page.url == "/" or page.layout == "post" %} aria-current="{% if page.url == '/' %}page{% else %}true{% endif %}"{% endif %}>Blog</a>
+      <a href="{{ _guides_url | relative_url }}"{% if page.url == _guides_url %} aria-current="page"{% endif %}>Guias</a>
+      <div class="lang" role="group" aria-label="Idioma">
+        <span class="lang-opt is-current" lang="pt-BR" title="Português (idioma atual)">PT<span class="sr-only"> (idioma atual)</span></span>
+        <span class="lang-opt is-disabled" lang="en" title="English version coming soon — no posts have been translated yet">EN<span class="sr-only"> (em breve: ainda não há posts traduzidos para o inglês)</span></span>
+      </div>
+      <a class="nav-cta" href="{{ site.product_url }}">Conhecer a CogniScion</a>
+    </nav>
+  </div>
+</header>

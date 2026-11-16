@@ -1,0 +1,40 @@
+---
+layout: default
+title: Guias
+permalink: /guias/
+description: Guias passo a passo do Blog CogniScion.
+---
+{%- assign _guides = site.posts | where: "format", "guide" -%}
+<section class="intro guides-intro" aria-labelledby="guides-h">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Trilha de navegação">
+      <ol>
+        <li><a href="{{ '/' | relative_url }}">Blog</a></li>
+        <li aria-current="page">Guias</li>
+      </ol>
+    </nav>
+    <h1 id="guides-h">Guias</h1>
+    <p class="lead">Guias são posts passo a passo, com exemplos e checklist, para colocar uma ideia em prática.</p>
+  </div>
+</section>
+
+<section class="posts" aria-label="Lista de guias">
+  <div class="wrap">
+    {%- if _guides.size > 0 %}
+    <h2 class="sr-only">Guias publicados</h2>
+    <div class="grid">
+      {%- for post in _guides %}
+      {% include post-card.html post=post %}
+      {%- endfor %}
+    </div>
+    {%- else %}
+    <div class="empty-state">
+      <h2>Guias em preparação</h2>
+      <p>Ainda não publicamos nenhum guia. Quando o primeiro sair, ele aparece aqui, em destaque no blog e no <a href="{{ '/feed.xml' | relative_url }}">feed RSS</a>.</p>
+      <p><a class="btn" href="{{ '/#posts' | relative_url }}">Ver os posts publicados</a></p>
+    </div>
+    {%- endif %}
+  </div>
+</section>
+
+{% include soft-cta.html %}

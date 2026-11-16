@@ -1,0 +1,52 @@
+---
+layout: default
+---
+{%- include post-meta-vars.html post=page -%}
+<article class="post">
+  <div class="wrap narrow">
+    <nav class="crumbs" aria-label="Trilha de navegação">
+      <ol>
+        <li><a href="{{ '/' | relative_url }}">Blog</a></li>
+        {%- if _format_key == "guide" %}
+        <li><a href="{{ '/guias/' | relative_url }}">Guias</a></li>
+        {%- elsif _topic %}
+        <li>{{ _topic }}</li>
+        {%- endif %}
+      </ol>
+    </nav>
+    <header class="post-head">
+      <h1>{{ page.title | escape }}</h1>
+      <p class="byline">
+        <span class="fmt">{{ _format.label }}</span>
+        <span>Por <strong>{{ page.author.name | default: page.author | default: site.author.name }}</strong></span>
+        <span><time datetime="{{ page.date | date_to_xmlschema }}">{% include date-pt.html date=page.date %}</time></span>
+        {%- if page.last_modified_at %}
+        <span>Atualizado em <time datetime="{{ page.last_modified_at | date_to_xmlschema }}">{% include date-pt.html date=page.last_modified_at %}</time></span>
+        {%- endif %}
+        <span>{% include reading-time.html content=content %}</span>
+      </p>
+    </header>
+    <div class="prose">
+      {{ content }}
+    </div>
+    <div class="post-end">
+      <a class="btn" href="{{ '/' | relative_url }}"><span aria-hidden="true">←</span> Voltar ao blog</a>
+      <a class="btn" href="{{ '/feed.xml' | relative_url }}">Assinar via RSS</a>
+    </div>
+  </div>
+
+  {%- assign _others = site.posts | where_exp: "p", "p.url != page.url" -%}
+  {%- if _others.size > 0 %}
+  <section class="related" aria-labelledby="related-h">
+    <div class="wrap">
+      <h2 id="related-h">Leia também</h2>
+      <div class="grid">
+        {%- for post in _others limit: 3 %}
+        {% include post-card.html post=post %}
+        {%- endfor %}
+      </div>
+    </div>
+  </section>
+  {%- endif %}
+</article>
+{% include soft-cta.html %}

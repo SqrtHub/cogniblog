@@ -1,0 +1,8 @@
+# Formatos editoriais de post. Use `format: guide` no front matter para
+# marcar um post como guia passo a passo. Sem `format`, o post é um post comum.
+guide:
+  label: Guia
+  plural: Guias
+post:
+  label: Post
+  plural: Posts
