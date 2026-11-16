@@ -1,5 +1,5 @@
 /* Blog CogniScion: melhorias progressivas (menu mobile e filtro de posts).
-   Sem JS, a navegação aparece aberta e todos os posts ficam visíveis. */
+   Sem JS, ou se este arquivo falhar, a navegação aparece aberta e todos os posts ficam visíveis. */
 (function () {
   "use strict";
 
@@ -11,7 +11,6 @@
   var nav = $("#site-nav");
   if (menuBtn && nav) {
     var mq = window.matchMedia("(max-width: 640px)");
-    menuBtn.hidden = false;
 
     var setMenu = function (open) {
       nav.classList.toggle("open", open);
@@ -46,6 +45,10 @@
     var onChange = function () { if (!mq.matches) setMenu(false); };
     if (mq.addEventListener) mq.addEventListener("change", onChange);
     else if (mq.addListener) mq.addListener(onChange);
+
+    // Só recolhe a navegação (CSS .menu-ready) depois que o botão funciona
+    menuBtn.hidden = false;
+    document.documentElement.classList.add("menu-ready");
   }
 
   // Filtro de posts por tema

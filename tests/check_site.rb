@@ -35,17 +35,39 @@ def front_matter(path)
   YAML.safe_load(path.read.split(/^---\s*$/, 3)[1], permitted_classes: [Date, Time]) || {}
 end
 
-# Posts publicados (a partir do repositório)
+# Primeiro tema do post, como `post.categories | first` no Jekyll 3: os itens de `categories`
+# (uma string é separada por espaços) vêm antes de `category`.
+def topic_of(fm)
+  cats = fm["categories"]
+  cats = cats.split if cats.is_a?(String)
+  (Array(cats) + Array(fm["category"])).compact.map(&:to_s).reject(&:empty?).first
+end
+
+# Posts publicados (a partir do repositório). Como o Jekyll, ignora `published: false` e,
+# sem `future: true` no _config.yml, posts com data futura (agendados).
+future = YAML.safe_load(ROOT.join("_config.yml").read)["future"] == true
 posts = Dir[ROOT.join("_posts/*.md")].sort.map do |f|
   path = Pathname.new(f)
   fm = front_matter(path)
   y, m, d, slug = path.basename(".md").to_s.match(/\A(\d{4})-(\d{2})-(\d{2})-(.+)\z/).captures
+  date = fm["date"].respond_to?(:to_time) ? fm["date"].to_time : Time.new(y.to_i, m.to_i, d.to_i)
   fm.merge("url" => "/#{y}/#{m}/#{d}/#{slug}/", "file" => "#{y}/#{m}/#{d}/#{slug}/index.html",
-           "sort" => (fm["date"] || Time.new(y.to_i, m.to_i, d.to_i)).to_s)
+           "time" => date, "day" => fm["date"].respond_to?(:strftime) ? fm["date"].strftime("%Y-%m-%d") : "#{y}-#{m}-#{d}",
+           "topic" => topic_of(fm))
 end
-posts.sort_by! { |p| p["sort"] }.reverse!
+posts.reject! { |p| p["published"] == false || (!future && p["time"] > Time.now) }
+posts.sort_by! { |p| p["time"] }.reverse!
 guides = posts.select { |p| p["format"] == "guide" }
 regular = posts.reject { |p| p["format"] == "guide" }
+topics = posts.map { |p| p["topic"] }.compact.uniq.sort
+
+# Destaques esperados, como em _layouts/home.html: o mais recente com `featured: true`
+# (mesmo que seja mais antigo que os demais) ou, sem nenhum, o mais recente do conjunto.
+def pick(list)
+  list.find { |p| p["featured"].to_s == "true" } || list.first
+end
+guide_pick = pick(guides)
+post_pick = pick(regular)
 
 pages = Dir[SITE.join("**/*.html")].map { |f| Pathname.new(f).relative_path_from(SITE).to_s }.sort
 
@@ -86,6 +108,10 @@ pages.each do |rel|
   end
   check("#{rel}: og:image absoluta") { doc.at('meta[property="og:image"]')&.[]("content").to_s.start_with?("#{BASE_URL}/") }
   check("#{rel}: um único h1") { doc.css("h1").size == 1 }
+  check("#{rel}: títulos sem pular níveis") do
+    levels = doc.css("h1, h2, h3, h4, h5, h6").map { |h| h.name[1].to_i }
+    levels.first == 1 && levels.each_cons(2).all? { |a, b| b <= a + 1 }
+  end
   check("#{rel}: navbar sem 'Sobre'") { doc.css(".site-nav a").none? { |a| a.text.strip =~ /sobre/i } }
   check("#{rel}: navbar com Blog, Guias e CTA do produto") do
     links = doc.css(".site-nav a").map { |a| [a.text.strip, a["href"]] }
@@ -121,29 +147,48 @@ end
 home = html("index.html")
 fguide = home.at('[aria-labelledby="feat-guide-h"]')
 fpost = home.at('[aria-labelledby="feat-post-h"]')
-check("home: destaque de guia antes do destaque de post") { fguide && fpost && fguide.path < fpost.path }
+check("home: espaço do guia em destaque sempre presente") { fguide }
 if guides.empty?
   check("home: sem guia publicado, mostra 'Guias em preparação' sem link de artigo") do
     fguide.at("h2").text.strip == "Guias em preparação" && fguide.css("a").map { |a| a["href"] } == ["/guias/"]
   end
 else
-  check("home: guia em destaque é o guia mais recente") { fguide.at("h2 a")["href"] == guides.first["url"] }
+  check("home: guia em destaque é o mais recente com featured: true ou, sem nenhum, o mais recente") do
+    fguide.at("h2 a")["href"] == guide_pick["url"]
+  end
 end
-check("home: post em destaque é o post comum mais recente") { fpost.at("h2 a")["href"] == regular.first["url"] }
-check("home: destaques são itens diferentes") { fguide.at("h2 a")&.[]("href") != fpost.at("h2 a")["href"] }
+if regular.empty?
+  check("home: sem post comum, não há destaque de post") { fpost.nil? }
+else
+  check("home: destaque de guia antes do destaque de post") { fguide.path < fpost.path }
+  check("home: post em destaque é o post comum mais recente com featured: true ou, sem nenhum, o mais recente") do
+    fpost.at("h2 a")["href"] == post_pick["url"]
+  end
+  check("home: destaques são itens diferentes") { fguide.at("h2 a")&.[]("href") != fpost.at("h2 a")["href"] }
+end
 cards = home.css("[data-grid] .card")
-check("home: grade lista todos os posts publicados, do mais novo ao mais antigo") do
-  cards.map { |c| c.at("h3 a")["href"] } == posts.map { |p| p["url"] }
+if posts.empty?
+  check("home: sem posts, mostra aviso e nenhuma grade, filtro ou mensagem de filtro") do
+    home.at("#posts").text.include?("Ainda não há posts publicados.") &&
+      home.at("[data-grid]").nil? && home.at("[data-filters]").nil? && home.at("[data-empty]").nil?
+  end
+else
+  check("home: grade lista todos os posts publicados, do mais novo ao mais antigo") do
+    cards.map { |c| c.at("h3 a")["href"] } == posts.map { |p| p["url"] }
+  end
+  check("home: títulos da grade iguais aos do front matter") do
+    cards.map { |c| c.at("h3 a").text } == posts.map { |p| p["title"] }
+  end
+  check("home: mensagem para filtro sem resultados") { home.at("[data-empty]") }
 end
-check("home: títulos da grade iguais aos do front matter") do
-  cards.map { |c| c.at("h3 a").text } == posts.map { |p| p["title"] }
+if topics.size > 1
+  check("home: filtros só com temas existentes e ocultos sem JS") do
+    chips = home.css("[data-filters] [data-filter]").map { |c| c["data-filter"] } - ["all"]
+    home.at("[data-filters]").key?("hidden") && chips == topics
+  end
+else
+  check("home: sem filtros com #{topics.size} tema(s)") { home.at("[data-filters]").nil? }
 end
-check("home: filtros só com temas existentes e ocultos sem JS") do
-  chips = home.css("[data-filters] [data-filter]").map { |c| c["data-filter"] } - ["all"]
-  topics = posts.map { |p| Array(p["categories"]).first }.compact.uniq.sort
-  home.at("[data-filters]").key?("hidden") && chips == topics
-end
-check("home: mensagem para filtro sem resultados") { home.at("[data-empty]") }
 
 # Guias
 gdoc = html("guias/index.html")
@@ -157,7 +202,7 @@ end
 posts.each do |p|
   doc = html(p["file"])
   check("#{p['url']}: título e data preservados") do
-    doc.at("h1").text == p["title"] && doc.at(".byline time")["datetime"].start_with?(p["date"].strftime("%Y-%m-%d"))
+    doc.at("h1").text == p["title"] && doc.at(".byline time")["datetime"].start_with?(p["day"])
   end
   ld = doc.css('script[type="application/ld+json"]').map { |s| JSON.parse(s.text) }
   check("#{p['url']}: BlogPosting com autor Organization e BreadcrumbList") do

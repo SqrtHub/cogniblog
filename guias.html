@@ -21,6 +21,7 @@ description: Guias passo a passo do Blog CogniScion.
 <section class="posts" aria-label="Lista de guias">
   <div class="wrap">
     {%- if _guides.size > 0 %}
+    <h2 class="sr-only">Guias publicados</h2>
     <div class="grid">
       {%- for post in _guides %}
       {% include post-card.html post=post %}
