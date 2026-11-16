@@ -1,0 +1,4 @@
+# Rótulos exibidos para cada categoria usada no front matter dos posts.
+# Categorias sem rótulo aqui aparecem com o próprio nome.
+anuncios: Anúncios
+tecnologia: Tecnologia

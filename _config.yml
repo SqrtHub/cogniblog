@@ -1,17 +1,26 @@
-title: Blog Cogniscion
+title: Blog CogniScion
 description: >-
-  Ideias, notas e aprendizados da Cogniscion.
-author: Cogniscion
+  Ideias, notas e aprendizados da CogniScion.
+author:
+  name: CogniScion
+  type: Organization
+  url: "https://cogniscion.com/"
 email: ""
 lang: pt-BR
+locale: pt_BR
 timezone: America/Sao_Paulo
 
 url: "https://blog.cogniscion.com"
 baseurl: ""
 
-theme: minima
-minima:
-  skin: auto
+# Site do produto (CTA da navbar, do rodapé e dos posts)
+product_url: "https://cogniscion.com/"
+
+# Logo usado pelo jekyll-seo-tag no publisher (Organization) do JSON-LD
+logo: /assets/img/cogniscion-logo.png
+
+# Layouts, includes e CSS próprios; desativa o tema padrão do GitHub Pages
+theme: null
 
 plugins:
   - jekyll-feed
@@ -20,14 +29,27 @@ plugins:
 
 permalink: /:year/:month/:day/:title/
 
-header_pages:
-  - sobre.md
-
-show_excerpts: true
+defaults:
+  - scope:
+      path: ""
+    values:
+      image:
+        path: /assets/img/og-blog-cogniscion.png
+        width: 1200
+        height: 630
+        alt: "Blog CogniScion"
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
 
 exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - docs
+  - tests
   - vendor
   - .bundle
+  - .ruby-version

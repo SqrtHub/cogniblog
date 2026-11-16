@@ -1,0 +1,11 @@
+{%- comment -%}
+  Data em português. Parâmetros: date (obrigatório), short (opcional, "true" para "12 nov. 2026").
+{%- endcomment -%}
+{%- assign _m = include.date | date: "%-m" | minus: 1 -%}
+{%- if include.short -%}
+  {%- assign _months = "jan.,fev.,mar.,abr.,maio,jun.,jul.,ago.,set.,out.,nov.,dez." | split: "," -%}
+  {{- include.date | date: "%-d" }} {{ _months[_m] }} {{ include.date | date: "%Y" -}}
+{%- else -%}
+  {%- assign _months = "janeiro,fevereiro,março,abril,maio,junho,julho,agosto,setembro,outubro,novembro,dezembro" | split: "," -%}
+  {{- include.date | date: "%-d" }} de {{ _months[_m] }} de {{ include.date | date: "%Y" -}}
+{%- endif -%}

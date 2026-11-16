@@ -1,0 +1,17 @@
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <h2>{{ site.title }}</h2>
+      <p>{{ site.description }}</p>
+    </div>
+    <nav aria-label="Rodapé">
+      <ul class="footer-links">
+        <li><a href="{{ '/sobre/' | relative_url }}">Sobre</a></li>
+        <li><a href="{{ '/guias/' | relative_url }}">Guias</a></li>
+        <li><a href="{{ '/feed.xml' | relative_url }}">RSS</a></li>
+        <li><a href="{{ site.product_url }}">cogniscion.com</a></li>
+      </ul>
+    </nav>
+    <p class="copyright">© {{ site.time | date: "%Y" }} CogniScion</p>
+  </div>
+</footer>
