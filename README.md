@@ -18,12 +18,19 @@ Acesse http://localhost:4000.
 
 ## Testes
 
-Depois de gerar o site, rode as verificações estruturais (rotas, canonical, robots, feed,
-sitemap, JSON-LD, links internos, destaques da home):
+Depois de gerar o site, rode as verificações estruturais (rotas sem data, idioma, canonical, hreflang,
+seletor de idioma, robots, feeds, sitemap, JSON-LD, links internos, destaques e listas de cada idioma):
 
 ```bash
 JEKYLL_ENV=production bundle exec jekyll build
 bundle exec ruby tests/check_site.rb _site
+```
+
+Para testar também a parte em inglês com posts de teste (sintéticos, em `tests/fixtures/en`, nunca publicados):
+
+```bash
+tests/with_en_fixtures.sh /tmp/blog-en && cd /tmp/blog-en
+JEKYLL_ENV=production bundle exec jekyll build && bundle exec ruby tests/check_site.rb _site
 ```
 
 ## Novo post
@@ -43,10 +50,25 @@ description: "Resumo curto para cards e mecanismos de busca."
 ```
 
 - O `layout: post` é aplicado automaticamente.
-- Rótulos de temas ficam em `_data/categories.yml`. Os formatos (Guia/Post) ficam em `_data/formats.yml`.
+- As URLs não têm data: o post fica em `/<slug>/` (o slug vem do nome do arquivo). A data continua no
+  front matter, no nome do arquivo e nos metadados.
+- Textos da interface, rótulos de temas e formatos (Guia/Post), por idioma, ficam em `_data/i18n.yml`.
 - **Destaques da home:** à esquerda aparece o guia mais recente (`format: guide`). À direita, o post comum mais recente. Nos dois casos, um item com `featured: true` tem preferência. Enquanto não houver guia publicado, o espaço do guia mostra "Guias em preparação".
 - A página `/guias/` lista apenas os posts com `format: guide`.
-- O site está só em português. A opção EN aparece desativada até existirem traduções.
+- **Inglês:** as páginas em inglês ficam em `en/` (`/en/`, `/en/guides/`, `/en/about/`, `/en/feed.xml`). Um post
+  em inglês é a tradução de um post em português e traz no front matter:
+
+  ```yaml
+  lang: "en"
+  locale: "en_US"
+  permalink: "/en/<slug-em-ingles>/"
+  translation_key: "<slug do post em português>"
+  ```
+
+  Cada página liga para o seu equivalente no outro idioma (seletor PT/EN e `hreflang`, com `x-default` na versão
+  em português). Sem equivalente, a outra opção aparece desativada e explicada. As listas, os destaques, o
+  "Leia também" e o feed de cada idioma mostram só os posts desse idioma. Os posts são publicados pelo
+  CogniManager (que gera esse front matter); não edite os arquivos dele à mão.
 
 ## Créditos
 

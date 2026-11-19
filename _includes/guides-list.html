@@ -1,0 +1,37 @@
+{%- comment -%} Página de guias de um idioma (guias.html, en/guides.html): só os guias desse idioma. {%- endcomment -%}
+{%- include i18n-vars.html -%}
+{%- assign _g = _t.guides -%}
+{%- assign _guides = _locale_posts | where: "format", "guide" -%}
+<section class="intro guides-intro" aria-labelledby="guides-h">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="{{ _t.crumbs_label }}">
+      <ol>
+        <li><a href="{{ _t.home_url | relative_url }}">{{ _t.nav_blog }}</a></li>
+        <li aria-current="page">{{ _t.nav_guides }}</li>
+      </ol>
+    </nav>
+    <h1 id="guides-h">{{ _t.nav_guides }}</h1>
+    <p class="lead">{{ _g.lead }}</p>
+  </div>
+</section>
+
+<section class="posts" aria-label="{{ _g.list_label }}">
+  <div class="wrap">
+    {%- if _guides.size > 0 %}
+    <h2 class="sr-only">{{ _g.published }}</h2>
+    <div class="grid">
+      {%- for post in _guides %}
+      {% include post-card.html post=post %}
+      {%- endfor %}
+    </div>
+    {%- else %}
+    <div class="empty-state">
+      <h2>{{ _g.empty_title }}</h2>
+      <p>{{ _g.empty_before }} <a href="{{ _t.feed_url | relative_url }}">{{ _g.empty_feed }}</a>.</p>
+      <p><a class="btn" href="{{ _t.home_url | append: '#posts' | relative_url }}">{{ _g.empty_button }}</a></p>
+    </div>
+    {%- endif %}
+  </div>
+</section>
+
+{% include soft-cta.html %}

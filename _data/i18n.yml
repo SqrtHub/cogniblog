@@ -1,0 +1,152 @@
+# Textos da interface por idioma. A chave é o `lang` da página (`site.lang` quando a página não define um).
+# Posts em inglês têm `lang: en` e `translation_key: <slug do post em português>` no front matter; o post em
+# português correspondente é o equivalente exibido no seletor de idioma e nos links hreflang.
+#
+# categories: rótulo de cada tema (`categories` do front matter). Temas sem rótulo aparecem com o próprio nome.
+# formats: formatos editoriais (`format: guide` marca um guia; sem `format`, é um post comum).
+pt-BR:
+  code: PT
+  name: Português
+  home_url: /
+  guides_url: /guias/
+  about_url: /sobre/
+  feed_url: /feed.xml
+  site_description: Ideias, notas e aprendizados da CogniScion.
+  skip_link: Pular para o conteúdo
+  menu_open: Abrir menu
+  menu_close: Fechar menu
+  nav_label: Principal
+  nav_blog: Blog
+  nav_guides: Guias
+  lang_label: Idioma
+  lang_current: idioma atual
+  lang_switch: Ler em português
+  lang_missing: esta página ainda não tem versão em português
+  cta: Conhecer a CogniScion
+  footer_label: Rodapé
+  footer_about: Sobre
+  crumbs_label: Trilha de navegação
+  by: Por
+  updated: Atualizado em
+  reading_time: min de leitura
+  back: Voltar ao blog
+  subscribe: Assinar via RSS
+  related: Leia também
+  months: [janeiro, fevereiro, março, abril, maio, junho, julho, agosto, setembro, outubro, novembro, dezembro]
+  months_short: [jan., fev., mar., abr., maio, jun., jul., ago., set., out., nov., dez.]
+  formats:
+    guide: {label: Guia, plural: Guias}
+    post: {label: Post, plural: Posts}
+  categories:
+    anuncios: Anúncios
+    avaliacao: Avaliação
+    pratica-docente: Prática docente
+    tecnologia: Tecnologia
+  home:
+    kicker: Blog CogniScion · Guias
+    title: O que você quer fazer hoje?
+    lead: Guias passo a passo e posts curtos para professores que preparam, corrigem e devolvem avaliações, além de notas da equipe.
+    featured_guide: Guia em destaque
+    featured_post: Post em destaque
+    read_guide: Ler o guia
+    read_post: Ler o post
+    guides_soon: Guias em preparação
+    guides_soon_text: Ainda não publicamos nenhum guia passo a passo. Quando o primeiro sair, ele aparece aqui e na página de Guias.
+    soon: Em breve
+    about_guides: Sobre os guias
+    posts: Posts
+    count_one: publicação
+    count_many: publicações
+    filter_label: Filtrar posts por tema
+    filter_all: Todos
+    filter_empty: Nenhum post neste tema ainda.
+    filter_reset: Ver todos os posts
+    no_posts: Ainda não há posts publicados.
+    rss_before: Assine
+    rss_link: via RSS
+    rss_after: para receber novos posts e guias.
+  guides:
+    lead: Guias são posts passo a passo, com exemplos e checklist, para colocar uma ideia em prática.
+    list_label: Lista de guias
+    published: Guias publicados
+    empty_title: Guias em preparação
+    empty_before: Ainda não publicamos nenhum guia. Quando o primeiro sair, ele aparece aqui, em destaque no blog e no
+    empty_feed: feed RSS
+    empty_button: Ver os posts publicados
+  soft_cta:
+    label: Conheça a CogniScion
+    title: Quer ver como isso funciona na prática?
+    text: A CogniScion ajuda a organizar a correção a partir de fotos das respostas.
+en:
+  code: EN
+  name: English
+  home_url: /en/
+  guides_url: /en/guides/
+  about_url: /en/about/
+  feed_url: /en/feed.xml
+  site_description: Ideas, notes and lessons from CogniScion.
+  skip_link: Skip to content
+  menu_open: Open menu
+  menu_close: Close menu
+  nav_label: Main
+  nav_blog: Blog
+  nav_guides: Guides
+  lang_label: Language
+  lang_current: current language
+  lang_switch: Read in English
+  lang_missing: this page has no English version yet
+  cta: Discover CogniScion
+  footer_label: Footer
+  footer_about: About
+  crumbs_label: Breadcrumb
+  by: By
+  updated: Updated
+  reading_time: min read
+  back: Back to the blog
+  subscribe: Subscribe via RSS
+  related: Read next
+  months: [January, February, March, April, May, June, July, August, September, October, November, December]
+  months_short: [Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+  formats:
+    guide: {label: Guide, plural: Guides}
+    post: {label: Post, plural: Posts}
+  categories:
+    anuncios: Announcements
+    avaliacao: Assessment
+    pratica-docente: Teaching practice
+    tecnologia: Technology
+  home:
+    kicker: CogniScion Blog · Guides
+    title: What do you want to do today?
+    lead: Step-by-step guides and short posts for teachers who prepare, grade and return assessments, plus notes from the team.
+    featured_guide: Featured guide
+    featured_post: Featured post
+    read_guide: Read the guide
+    read_post: Read the post
+    guides_soon: Guides in preparation
+    guides_soon_text: We haven't published a step-by-step guide in English yet. When the first one is out, it will appear here and on the Guides page.
+    soon: Coming soon
+    about_guides: About the guides
+    posts: Posts
+    count_one: article
+    count_many: articles
+    filter_label: Filter posts by topic
+    filter_all: All
+    filter_empty: No posts on this topic yet.
+    filter_reset: See all posts
+    no_posts: No posts published in English yet.
+    rss_before: Subscribe
+    rss_link: via RSS
+    rss_after: to get new posts and guides.
+  guides:
+    lead: Guides are step-by-step posts, with examples and a checklist, to put an idea into practice.
+    list_label: List of guides
+    published: Published guides
+    empty_title: Guides in preparation
+    empty_before: We haven't published a guide in English yet. When the first one is out, it will appear here, featured on the blog and in the
+    empty_feed: RSS feed
+    empty_button: See the published posts
+  soft_cta:
+    label: Discover CogniScion
+    title: Want to see how this works in practice?
+    text: CogniScion helps organize grading from photos of students' answers.

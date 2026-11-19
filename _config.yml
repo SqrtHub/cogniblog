@@ -27,7 +27,8 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
-permalink: /:year/:month/:day/:title/
+# URLs sem data: /<slug>/ em português e /en/<slug>/ em inglês (a data fica só nos metadados).
+permalink: /:title/
 
 defaults:
   - scope:
@@ -43,6 +44,12 @@ defaults:
       type: posts
     values:
       layout: post
+  # Páginas em inglês (en/). Posts em inglês trazem lang/locale/permalink no próprio front matter.
+  - scope:
+      path: "en"
+    values:
+      lang: en
+      locale: en_US
 
 exclude:
   - Gemfile

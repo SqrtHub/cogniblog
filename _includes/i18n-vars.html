@@ -1,0 +1,25 @@
+{%- comment -%}
+  Idioma da página e seu equivalente no outro idioma (_data/i18n.yml). Define:
+  _lang, _t (textos do idioma), _locale_posts (posts publicados neste idioma) e _peer (a página ou o post
+  equivalente no outro idioma, ou nil). Um post em inglês aponta para o post em português pelo slug, em
+  `translation_key`; páginas equivalentes compartilham o mesmo `translation_key`.
+{%- endcomment -%}
+{%- assign _lang = page.lang | default: site.lang -%}
+{%- assign _t = site.data.i18n[_lang] -%}
+{%- if _lang == "en" -%}
+  {%- assign _locale_posts = site.posts | where: "lang", "en" -%}
+{%- else -%}
+  {%- assign _locale_posts = site.posts | where_exp: "p", "p.lang != 'en'" -%}
+{%- endif -%}
+{%- assign _peer = nil -%}
+{%- if page.collection == "posts" -%}
+  {%- for p in site.posts -%}
+    {%- if _lang == "en" and p.lang != "en" and p.slug == page.translation_key -%}{%- assign _peer = p -%}{%- break -%}{%- endif -%}
+    {%- if _lang != "en" and p.lang == "en" and p.translation_key == page.slug -%}{%- assign _peer = p -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- elsif page.translation_key -%}
+  {%- for p in site.pages -%}
+    {%- assign _pl = p.lang | default: site.lang -%}
+    {%- if p.translation_key == page.translation_key and _pl != _lang -%}{%- assign _peer = p -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}

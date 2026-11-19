@@ -2,13 +2,13 @@
   <div class="wrap">
     <div>
       <h2>{{ site.title }}</h2>
-      <p>{{ site.description }}</p>
+      <p>{{ _t.site_description }}</p>
     </div>
-    <nav aria-label="Rodapé">
+    <nav aria-label="{{ _t.footer_label }}">
       <ul class="footer-links">
-        <li><a href="{{ '/sobre/' | relative_url }}">Sobre</a></li>
-        <li><a href="{{ '/guias/' | relative_url }}">Guias</a></li>
-        <li><a href="{{ '/feed.xml' | relative_url }}">RSS</a></li>
+        <li><a href="{{ _t.about_url | relative_url }}">{{ _t.footer_about }}</a></li>
+        <li><a href="{{ _t.guides_url | relative_url }}">{{ _t.nav_guides }}</a></li>
+        <li><a href="{{ _t.feed_url | relative_url }}">RSS</a></li>
         <li><a href="{{ site.product_url }}">cogniscion.com</a></li>
       </ul>
     </nav>

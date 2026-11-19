@@ -2,8 +2,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
+  {%- if page.title == nil and _lang != site.lang %}
+  {%- comment %} jekyll-seo-tag completaria o título com a descrição do site em português. {% endcomment %}
+  <title>{{ site.title }} | {{ _t.site_description }}</title>
+  {%- seo title=false %}
+  {%- else %}
   {%- seo %}
-  {%- feed_meta %}
+  {%- endif %}
+  {%- if _peer %}
+  {%- if _lang == site.lang %}{% assign _default_url = page.url %}{% else %}{% assign _default_url = _peer.url %}{% endif %}
+  <link rel="alternate" hreflang="{{ _lang }}" href="{{ page.url | absolute_url }}">
+  <link rel="alternate" hreflang="{{ _peer.lang | default: site.lang }}" href="{{ _peer.url | absolute_url }}">
+  <link rel="alternate" hreflang="x-default" href="{{ _default_url | absolute_url }}">
+  {%- endif %}
+  <link type="application/atom+xml" rel="alternate" href="{{ _t.feed_url | absolute_url }}" title="{{ site.title }}">
   <meta name="theme-color" content="#0D1B2A">
   <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" sizes="32x32">
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/favicon-light.svg' | relative_url }}" media="(prefers-color-scheme: light)">
@@ -12,7 +24,7 @@
   <link rel="preload" href="{{ '/assets/fonts/montserrat-latin-wght-normal.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ '/assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{{ '/assets/css/blog.css' | relative_url }}">
-  {%- if page.breadcrumbs != false and page.url != "/" %}
+  {%- if page.breadcrumbs != false and page.layout != "home" %}
   {%- include breadcrumbs-jsonld.html %}
   {%- endif %}
   <script src="{{ '/assets/js/blog.js' | relative_url }}" defer></script>

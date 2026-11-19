@@ -1,0 +1,43 @@
+{%- comment -%}
+  Feed Atom de um idioma (feed.xml, en/feed.xml), no formato do jekyll-feed, só com os posts desse idioma.
+  O jekyll-feed não gera o próprio feed.xml quando este arquivo existe.
+{%- endcomment -%}
+{%- include i18n-vars.html -%}
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ _lang }}">
+  <generator uri="https://jekyllrb.com/" version="{{ jekyll.version }}">Jekyll</generator>
+  <link href="{{ page.url | absolute_url }}" rel="self" type="application/atom+xml" />
+  <link href="{{ _t.home_url | absolute_url }}" rel="alternate" type="text/html" hreflang="{{ _lang }}" />
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  <id>{{ page.url | absolute_url | xml_escape }}</id>
+  <title type="html">{{ site.title | smartify | xml_escape }}</title>
+  <subtitle>{{ _t.site_description | xml_escape }}</subtitle>
+  <author>
+    <name>{{ site.author.name | xml_escape }}</name>
+    <uri>{{ site.author.url | xml_escape }}</uri>
+  </author>
+  {%- for post in _locale_posts limit: 10 %}
+  {%- assign post_title = post.title | smartify | strip_html | normalize_whitespace | xml_escape %}
+  <entry xml:lang="{{ _lang }}">
+    <title type="html">{{ post_title }}</title>
+    <link href="{{ post.url | absolute_url }}" rel="alternate" type="text/html" title="{{ post_title }}" />
+    <published>{{ post.date | date_to_xmlschema }}</published>
+    <updated>{{ post.last_modified_at | default: post.date | date_to_xmlschema }}</updated>
+    <id>{{ post.url | absolute_url | xml_escape }}</id>
+    <content type="html" xml:base="{{ post.url | absolute_url | xml_escape }}"><![CDATA[{{ post.content | strip }}]]></content>
+    <author>
+      <name>{{ site.author.name | xml_escape }}</name>
+    </author>
+    {%- for category in post.categories %}
+    <category term="{{ category | xml_escape }}" />
+    {%- endfor %}
+    {%- for tag in post.tags %}
+    <category term="{{ tag | xml_escape }}" />
+    {%- endfor %}
+    {%- assign post_summary = post.description | default: post.excerpt %}
+    {%- if post_summary and post_summary != empty %}
+    <summary type="html"><![CDATA[{{ post_summary | strip_html | normalize_whitespace }}]]></summary>
+    {%- endif %}
+  </entry>
+  {%- endfor %}
+</feed>

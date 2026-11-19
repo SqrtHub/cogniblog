@@ -1,4 +1,5 @@
-/* Blog CogniScion: melhorias progressivas (menu mobile e filtro de posts).
+/* Blog CogniScion: melhorias progressivas (menu mobile e filtro de posts). Os textos vêm do HTML (data-*),
+   no idioma da página.
    Sem JS, ou se este arquivo falhar, a navegação aparece aberta e todos os posts ficam visíveis. */
 (function () {
   "use strict";
@@ -15,7 +16,7 @@
     var setMenu = function (open) {
       nav.classList.toggle("open", open);
       menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
-      menuBtn.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+      menuBtn.setAttribute("aria-label", menuBtn.getAttribute(open ? "data-label-close" : "data-label-open"));
     };
 
     menuBtn.addEventListener("click", function () {
@@ -72,7 +73,7 @@
         if (on) shown++;
       });
       if (empty) empty.hidden = shown > 0;
-      if (count) count.textContent = shown + (shown === 1 ? " publicação" : " publicações");
+      if (count) count.textContent = shown + " " + count.getAttribute(shown === 1 ? "data-one" : "data-many");
     };
 
     chips.forEach(function (c) {

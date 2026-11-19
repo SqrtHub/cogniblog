@@ -6,9 +6,12 @@ layout: default
   - guia: post mais recente com `format: guide` (ou o mais recente com `featured: true`, se houver);
   - post: post comum (sem `format: guide`) mais recente, com a mesma preferência por `featured: true`.
   O mesmo item nunca ocupa os dois espaços, porque guia e post comum são conjuntos disjuntos.
+  Só entram os posts do idioma da página (_locale_posts).
 {%- endcomment -%}
-{%- assign _guides = site.posts | where: "format", "guide" -%}
-{%- assign _regular = site.posts | where_exp: "p", "p.format != 'guide'" -%}
+{%- include i18n-vars.html -%}
+{%- assign _h = _t.home -%}
+{%- assign _guides = _locale_posts | where: "format", "guide" -%}
+{%- assign _regular = _locale_posts | where_exp: "p", "p.format != 'guide'" -%}
 {%- assign _guide_pick = _guides | where: "featured", true | first -%}
 {%- assign _post_pick = _regular | where: "featured", true | first -%}
 {%- unless _post_pick -%}{%- assign _post_pick = _regular.first -%}{%- endunless -%}
@@ -16,9 +19,9 @@ layout: default
 
 <section class="intro" aria-labelledby="intro-h">
   <div class="wrap">
-    <p class="kicker">Blog CogniScion · Guias</p>
-    <h1 id="intro-h">O que você quer fazer hoje?</h1>
-    <p class="lead">Guias passo a passo e posts curtos para professores que preparam, corrigem e devolvem avaliações, além de notas da equipe.</p>
+    <p class="kicker">{{ _h.kicker }}</p>
+    <h1 id="intro-h">{{ _h.title }}</h1>
+    <p class="lead">{{ _h.lead }}</p>
 
     <div class="featured">
       {%- if _guide_pick %}
@@ -26,12 +29,12 @@ layout: default
       <article class="fcard" aria-labelledby="feat-guide-h">
         <div class="art art-guide" aria-hidden="true"><span>1</span><span>2</span><span>3</span></div>
         <div class="body">
-          <p class="label">Guia em destaque</p>
+          <p class="label">{{ _h.featured_guide }}</p>
           <h2 id="feat-guide-h"><a href="{{ _guide_pick.url | relative_url }}">{{ _guide_pick.title | escape }}</a></h2>
           <p>{{ _guide_pick.description | default: _guide_pick.excerpt | strip_html | normalize_whitespace | truncate: 200 }}</p>
           <div class="row">
-            <span class="post-meta"><span class="fmt">{{ _format.label }}</span> <time datetime="{{ _guide_pick.date | date_to_xmlschema }}">{% include date-pt.html date=_guide_pick.date short=true %}</time> · {% include reading-time.html content=_guide_pick.content %}</span>
-            <a class="btn solid" href="{{ _guide_pick.url | relative_url }}" aria-label="Ler o guia: {{ _guide_pick.title | escape }}">Ler o guia</a>
+            <span class="post-meta"><span class="fmt">{{ _format.label }}</span> <time datetime="{{ _guide_pick.date | date_to_xmlschema }}">{% include date.html date=_guide_pick.date short=true %}</time> · {% include reading-time.html content=_guide_pick.content %}</span>
+            <a class="btn solid" href="{{ _guide_pick.url | relative_url }}" aria-label="{{ _h.read_guide }}: {{ _guide_pick.title | escape }}">{{ _h.read_guide }}</a>
           </div>
         </div>
       </article>
@@ -39,12 +42,12 @@ layout: default
       <article class="fcard is-empty" aria-labelledby="feat-guide-h">
         <div class="art art-guide" aria-hidden="true"><span>1</span><span>2</span><span>3</span></div>
         <div class="body">
-          <p class="label">Guia em destaque</p>
-          <h2 id="feat-guide-h">Guias em preparação</h2>
-          <p>Ainda não publicamos nenhum guia passo a passo. Quando o primeiro sair, ele aparece aqui e na página de Guias.</p>
+          <p class="label">{{ _h.featured_guide }}</p>
+          <h2 id="feat-guide-h">{{ _h.guides_soon }}</h2>
+          <p>{{ _h.guides_soon_text }}</p>
           <div class="row">
-            <span class="post-meta"><span class="fmt">Guia</span> Em breve</span>
-            <a class="btn" href="{{ '/guias/' | relative_url }}">Sobre os guias</a>
+            <span class="post-meta"><span class="fmt">{{ _t.formats.guide.label }}</span> {{ _h.soon }}</span>
+            <a class="btn" href="{{ _t.guides_url | relative_url }}">{{ _h.about_guides }}</a>
           </div>
         </div>
       </article>
@@ -55,12 +58,12 @@ layout: default
       <article class="fcard" aria-labelledby="feat-post-h">
         <div class="art art-post" aria-hidden="true"><span></span><span></span><span></span></div>
         <div class="body">
-          <p class="label">Post em destaque</p>
+          <p class="label">{{ _h.featured_post }}</p>
           <h2 id="feat-post-h"><a href="{{ _post_pick.url | relative_url }}">{{ _post_pick.title | escape }}</a></h2>
           <p>{{ _post_pick.description | default: _post_pick.excerpt | strip_html | normalize_whitespace | truncate: 200 }}</p>
           <div class="row">
-            <span class="post-meta"><span class="fmt">{{ _format.label }}</span> <time datetime="{{ _post_pick.date | date_to_xmlschema }}">{% include date-pt.html date=_post_pick.date short=true %}</time> · {% include reading-time.html content=_post_pick.content %}</span>
-            <a class="btn solid" href="{{ _post_pick.url | relative_url }}" aria-label="Ler o post: {{ _post_pick.title | escape }}">Ler o post</a>
+            <span class="post-meta"><span class="fmt">{{ _format.label }}</span> <time datetime="{{ _post_pick.date | date_to_xmlschema }}">{% include date.html date=_post_pick.date short=true %}</time> · {% include reading-time.html content=_post_pick.content %}</span>
+            <a class="btn solid" href="{{ _post_pick.url | relative_url }}" aria-label="{{ _h.read_post }}: {{ _post_pick.title | escape }}">{{ _h.read_post }}</a>
           </div>
         </div>
       </article>
@@ -72,34 +75,34 @@ layout: default
 <section class="posts" id="posts" aria-labelledby="posts-h">
   <div class="wrap">
     <div class="section-head">
-      <h2 id="posts-h">Posts</h2>
-      <span class="post-meta" data-count aria-live="polite">{{ site.posts.size }} {% if site.posts.size == 1 %}publicação{% else %}publicações{% endif %}</span>
+      <h2 id="posts-h">{{ _h.posts }}</h2>
+      <span class="post-meta" data-count data-one="{{ _h.count_one }}" data-many="{{ _h.count_many }}" aria-live="polite">{{ _locale_posts.size }} {% if _locale_posts.size == 1 %}{{ _h.count_one }}{% else %}{{ _h.count_many }}{% endif %}</span>
     </div>
     {%- assign _topics = "" | split: "" -%}
-    {%- for post in site.posts -%}
-      {%- assign _t = post.categories | first -%}
-      {%- if _t -%}{%- unless _topics contains _t -%}{%- assign _topics = _topics | push: _t -%}{%- endunless -%}{%- endif -%}
+    {%- for post in _locale_posts -%}
+      {%- assign _pt = post.categories | first -%}
+      {%- if _pt -%}{%- unless _topics contains _pt -%}{%- assign _topics = _topics | push: _pt -%}{%- endunless -%}{%- endif -%}
     {%- endfor -%}
     {%- assign _topics = _topics | sort %}
     {%- if _topics.size > 1 %}
-    <div class="chips" role="group" aria-label="Filtrar posts por tema" data-filters hidden>
-      <button class="chip" type="button" aria-pressed="true" data-filter="all">Todos</button>
+    <div class="chips" role="group" aria-label="{{ _h.filter_label }}" data-filters hidden>
+      <button class="chip" type="button" aria-pressed="true" data-filter="all">{{ _h.filter_all }}</button>
       {%- for t in _topics %}
-      <button class="chip" type="button" aria-pressed="false" data-filter="{{ t }}">{{ site.data.categories[t] | default: t }}</button>
+      <button class="chip" type="button" aria-pressed="false" data-filter="{{ t }}">{{ _t.categories[t] | default: t }}</button>
       {%- endfor %}
     </div>
     {%- endif %}
-    {%- if site.posts.size > 0 %}
+    {%- if _locale_posts.size > 0 %}
     <div class="grid" data-grid>
-      {%- for post in site.posts %}
+      {%- for post in _locale_posts %}
       {% include post-card.html post=post %}
       {%- endfor %}
     </div>
-    <p class="empty" data-empty hidden>Nenhum post neste tema ainda. <button type="button" class="link-btn" data-filter-reset>Ver todos os posts</button></p>
+    <p class="empty" data-empty hidden>{{ _h.filter_empty }} <button type="button" class="link-btn" data-filter-reset>{{ _h.filter_reset }}</button></p>
     {%- else %}
-    <p class="empty">Ainda não há posts publicados.</p>
+    <p class="empty">{{ _h.no_posts }}</p>
     {%- endif %}
-    <p class="rss">Assine <a href="{{ '/feed.xml' | relative_url }}">via RSS</a> para receber novos posts e guias.</p>
+    <p class="rss">{{ _h.rss_before }} <a href="{{ _t.feed_url | relative_url }}">{{ _h.rss_link }}</a> {{ _h.rss_after }}</p>
   </div>
 </section>
 

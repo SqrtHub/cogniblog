@@ -1,0 +1,13 @@
+{%- comment -%}
+  Data no idioma da página (usa _lang e _t de i18n-vars.html). Parâmetros: date (obrigatório),
+  short (opcional, "true" para a forma curta: "12 nov. 2026" / "Nov 12, 2026").
+{%- endcomment -%}
+{%- assign _m = include.date | date: "%-m" | minus: 1 -%}
+{%- if include.short -%}{%- assign _months = _t.months_short -%}{%- else -%}{%- assign _months = _t.months -%}{%- endif -%}
+{%- if _lang == "en" -%}
+  {{- _months[_m] }} {{ include.date | date: "%-d" }}, {{ include.date | date: "%Y" -}}
+{%- elsif include.short -%}
+  {{- include.date | date: "%-d" }} {{ _months[_m] }} {{ include.date | date: "%Y" -}}
+{%- else -%}
+  {{- include.date | date: "%-d" }} de {{ _months[_m] }} de {{ include.date | date: "%Y" -}}
+{%- endif -%}
