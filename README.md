@@ -26,7 +26,8 @@ JEKYLL_ENV=production bundle exec jekyll build
 bundle exec ruby tests/check_site.rb _site
 ```
 
-Para testar também a parte em inglês com posts de teste (sintéticos, em `tests/fixtures/en`, nunca publicados):
+Para testar também a parte em inglês e casos de borda do feed com posts de teste (sintéticos, em
+`tests/fixtures/*/_posts`, nunca publicados; o destino precisa ser novo ou criado pelo próprio script):
 
 ```bash
 tests/with_en_fixtures.sh /tmp/blog-en && cd /tmp/blog-en
@@ -53,6 +54,9 @@ description: "Resumo curto para cards e mecanismos de busca."
 - As URLs não têm data: o post fica em `/<slug>/` (o slug vem do nome do arquivo). A data continua no
   front matter, no nome do arquivo e nos metadados.
 - Textos da interface, rótulos de temas e formatos (Guia/Post), por idioma, ficam em `_data/i18n.yml`.
+- Os botões de ação (navbar e chamada no fim das páginas) dizem "Teste o CogniScion" / "Try CogniScion" e levam à
+  criação de conta (`signup_url` no `_config.yml`). O `product_url` (site) continua sendo a identidade da marca
+  no rodapé e nos metadados.
 - **Destaques da home:** à esquerda aparece o guia mais recente (`format: guide`). À direita, o post comum mais recente. Nos dois casos, um item com `featured: true` tem preferência. Enquanto não houver guia publicado, o espaço do guia mostra "Guias em preparação".
 - A página `/guias/` lista apenas os posts com `format: guide`.
 - **Inglês:** as páginas em inglês ficam em `en/` (`/en/`, `/en/guides/`, `/en/about/`, `/en/feed.xml`). Um post

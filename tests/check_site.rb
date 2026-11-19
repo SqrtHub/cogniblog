@@ -4,6 +4,7 @@
 # Uso: bundle exec jekyll build && bundle exec ruby tests/check_site.rb [_site]
 # Com posts em inglês de teste (tests/fixtures/en, nunca publicados): veja o README.
 
+require "cgi"
 require "date"
 require "json"
 require "nokogiri"
@@ -14,6 +15,8 @@ SITE = Pathname.new(ARGV[0] || "_site").expand_path
 ROOT = Pathname.new(__dir__).join("..").expand_path
 BASE_URL = "https://blog.cogniscion.com"
 PRODUCT_URL = "https://cogniscion.com/"
+SIGNUP_URL = "https://cogniscion.com/educator/signup"
+CTA_LABEL = { "pt-BR" => "Teste o CogniScion", "en" => "Try CogniScion" }.freeze
 I18N = YAML.safe_load(ROOT.join("_data/i18n.yml").read)
 PT = "pt-BR"
 EN = "en"
@@ -120,12 +123,35 @@ check("sitemap inclui as páginas dos dois idiomas e todos os posts") do
 end
 check("sitemap não inclui 404 nem feeds") { locs.none? { |u| u.include?("404") || u.end_with?(".xml") } }
 { PT => "feed.xml", EN => "en/feed.xml" }.each do |lang, f|
-  feed = Nokogiri::XML(SITE.join(f).read) { |c| c.strict }
+  feed = nil
+  check("#{f}: XML bem formado") { feed = Nokogiri::XML(SITE.join(f).read) { |c| c.strict } }
+  next unless feed
+
   feed.remove_namespaces!
-  check("#{f}: XML válido em #{lang}, só com os posts desse idioma, do mais novo ao mais antigo") do
+  entries = by_lang[lang].first(10)
+  check("#{f}: em #{lang}, só com os posts desse idioma, do mais novo ao mais antigo, ids = URLs sem data") do
     feed.root["lang"] == lang &&
-      feed.xpath("//entry/link/@href").map(&:text) == by_lang[lang].first(10).map { |p| BASE_URL + p["url"] } &&
+      feed.xpath("//entry/link/@href").map(&:text) == entries.map { |p| BASE_URL + p["url"] } &&
+      feed.xpath("//entry/id").map(&:text) == entries.map { |p| BASE_URL + p["url"] } &&
       feed.xpath("//entry").all? { |e| e["lang"] == lang }
+  end
+  check("#{f}: título e resumo decodificados iguais ao texto do post (descrição ou primeiro parágrafo)") do
+    feed.xpath("//entry").zip(entries).all? do |e, p|
+      summary = CGI.unescapeHTML(e.at("summary").text)
+      src = ROOT.join("_posts").children.find { |c| c.basename.to_s.end_with?("-#{p['slug']}.md") }.read
+      first = src.split("{% raw %}\n", 2)[1].to_s.split("\n\n").first.to_s
+      want = (p["description"] || first).split.join(" ")
+      typo = ->(t) { CGI.unescapeHTML(t).tr("“”‘’", "\"\"''").gsub("–", "--").gsub("—", "---") }
+      typo.call(e.at("title").text) == typo.call(p["title"]) && e.at("title")["type"] == "html" &&
+        typo.call(summary) == typo.call(want) &&
+        e.at("summary")["type"] == "html"
+    end
+  end
+  check("#{f}: conteúdo decodificado contém a sequência ]]> quando o post a tem") do
+    feed.xpath("//entry").zip(entries).all? do |e, p|
+      body = ROOT.join("_posts").children.find { |c| c.basename.to_s.end_with?("-#{p['slug']}.md") }.read
+      !body.include?("]]>") || CGI.unescapeHTML(e.at("content").text).include?("]]>")
+    end
   end
 end
 
@@ -176,12 +202,25 @@ pages.each do |rel|
   check("#{rel}: navbar sem 'Sobre'/'About'") { doc.css(".site-nav a").none? { |a| a.text.strip =~ /sobre|about/i } }
   check("#{rel}: navbar no idioma da página (Blog, Guias/Guides, CTA)") do
     links = doc.css(".site-nav a").reject { |a| a["class"].to_s.include?("lang-opt") }.map { |a| [a.text.strip, a["href"]] }
-    links == [[t["nav_blog"], t["home_url"]], [t["nav_guides"], t["guides_url"]], [t["cta"], PRODUCT_URL]] &&
+    links == [[t["nav_blog"], t["home_url"]], [t["nav_guides"], t["guides_url"]], [CTA_LABEL[lang], SIGNUP_URL]] &&
       doc.at(".site-nav")["aria-label"] == t["nav_label"] && doc.at(".skip-link").text == t["skip_link"]
   end
   check("#{rel}: rodapé no idioma da página") do
     doc.css(".footer-links a").map { |a| a["href"] } == [t["about_url"], t["guides_url"], t["feed_url"], PRODUCT_URL] &&
       doc.at(".site-footer p").text == t["site_description"]
+  end
+  check("#{rel}: botões de ação com o texto exato e a criação de conta como destino") do
+    nav = doc.css(".site-nav a.nav-cta")
+    soft = doc.css(".soft-cta a")
+    chrome = doc.css(".site-header, .soft-cta").text
+    nav.map { |a| [a.text.strip, a["href"]] } == [[CTA_LABEL[lang], SIGNUP_URL]] &&
+      (soft.empty? || (soft.map { |a| [a.text.strip, a["href"]] } == [[CTA_LABEL[lang], SIGNUP_URL]] &&
+                       doc.at(".soft-cta")["aria-label"] == CTA_LABEL[lang])) &&
+      chrome !~ /Conhe(c|ç)(er|a) a CogniScion|Discover CogniScion/
+  end
+  check("#{rel}: identidade da marca continua no site (rodapé e metadados), não no cadastro") do
+    doc.css(".footer-links a").last["href"] == PRODUCT_URL &&
+      doc.css('script[type="application/ld+json"]').none? { |s| s.text.include?("/educator/signup") }
   end
   check("#{rel}: feed do idioma no <head>") do
     doc.css('link[type="application/atom+xml"]').map { |l| l["href"] } == [BASE_URL + t["feed_url"]]

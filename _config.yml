@@ -13,8 +13,10 @@ timezone: America/Sao_Paulo
 url: "https://blog.cogniscion.com"
 baseurl: ""
 
-# Site do produto (CTA da navbar, do rodapé e dos posts)
+# Site do produto: identidade da marca (link do rodapé, autor/organização nos metadados)
 product_url: "https://cogniscion.com/"
+# Destino dos botões de ação (navbar e chamada no fim das páginas): criação de conta no app
+signup_url: "https://cogniscion.com/educator/signup"
 
 # Logo usado pelo jekyll-seo-tag no publisher (Organization) do JSON-LD
 logo: /assets/img/cogniscion-logo.png

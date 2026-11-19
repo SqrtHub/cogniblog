@@ -22,7 +22,7 @@ pt-BR:
   lang_current: idioma atual
   lang_switch: Ler em português
   lang_missing: esta página ainda não tem versão em português
-  cta: Conhecer a CogniScion
+  cta: Teste o CogniScion
   footer_label: Rodapé
   footer_about: Sobre
   crumbs_label: Trilha de navegação
@@ -74,7 +74,7 @@ pt-BR:
     empty_feed: feed RSS
     empty_button: Ver os posts publicados
   soft_cta:
-    label: Conheça a CogniScion
+    label: Teste o CogniScion
     title: Quer ver como isso funciona na prática?
     text: A CogniScion ajuda a organizar a correção a partir de fotos das respostas.
 en:
@@ -95,7 +95,7 @@ en:
   lang_current: current language
   lang_switch: Read in English
   lang_missing: this page has no English version yet
-  cta: Discover CogniScion
+  cta: Try CogniScion
   footer_label: Footer
   footer_about: About
   crumbs_label: Breadcrumb
@@ -148,6 +148,6 @@ en:
     empty_feed: RSS feed
     empty_button: See the published posts
   soft_cta:
-    label: Discover CogniScion
+    label: Try CogniScion
     title: Want to see how this works in practice?
     text: CogniScion helps organize grading from photos of students' answers.
