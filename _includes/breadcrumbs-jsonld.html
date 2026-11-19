@@ -1,10 +1,10 @@
-{%- comment -%} BreadcrumbList: Blog › página atual. {%- endcomment -%}
+{%- comment -%} BreadcrumbList: Blog (início do idioma) › página atual. {%- endcomment -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type": "ListItem", "position": 1, "name": {{ site.title | jsonify }}, "item": {{ "/" | absolute_url | jsonify }}},
+    {"@type": "ListItem", "position": 1, "name": {{ site.title | jsonify }}, "item": {{ _t.home_url | absolute_url | jsonify }}},
     {"@type": "ListItem", "position": 2, "name": {{ page.title | jsonify }}, "item": {{ page.url | absolute_url | jsonify }}}
   ]
 }

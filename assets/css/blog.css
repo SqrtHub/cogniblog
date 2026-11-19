@@ -83,6 +83,10 @@ img { max-width: 100%; height: auto; }
 .lang-opt { font: 600 12px/1 var(--heading); padding: 7px 11px; color: #BEC8CA; }
 .lang-opt.is-current { background: var(--nav-accent); color: #003740; }
 .lang-opt.is-disabled { color: #8A9599; cursor: not-allowed; }
+/* Link para a versão desta página no outro idioma (mesmo tamanho das outras opções, também no menu mobile) */
+.site-nav a.lang-opt { font: 600 12px/1 var(--heading); padding: 7px 11px; color: #DFE3E8; border-bottom: 0; }
+.site-nav a.lang-opt:hover { color: #fff; background: var(--navy-line); }
+.site-nav a.lang-opt:focus-visible { outline-offset: -3px; }
 .site-nav a.nav-cta {
   background: var(--chartreuse); color: var(--on-chartreuse);
   font: 700 13px var(--body); border-radius: 999px; padding: 7px 14px;

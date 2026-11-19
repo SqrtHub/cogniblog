@@ -1,5 +1,5 @@
 {%- comment -%}
-  Define variáveis editoriais de um post: _format_key, _format, _topic_key, _topic.
+  Define variáveis editoriais de um post no idioma da página (_t): _format_key, _format, _topic_key, _topic.
   Parâmetro: post.
 {%- endcomment -%}
 {%- if include.post.format == "guide" -%}
@@ -7,6 +7,6 @@
 {%- else -%}
   {%- assign _format_key = "post" -%}
 {%- endif -%}
-{%- assign _format = site.data.formats[_format_key] -%}
+{%- assign _format = _t.formats[_format_key] -%}
 {%- assign _topic_key = include.post.categories | first -%}
-{%- assign _topic = site.data.categories[_topic_key] | default: _topic_key -%}
+{%- assign _topic = _t.categories[_topic_key] | default: _topic_key -%}
