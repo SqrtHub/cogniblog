@@ -1,6 +1,7 @@
 ---
 title: "Fotos de provas: cuidados para deixar as respostas legíveis"
 date: 2026-11-19 00:22:26 -0300
+last_modified_at: 2026-11-19 11:10:13 -0300
 categories: ["pratica-docente"]
 tags: ["avaliacoes-manuscritas", "fotografia", "organizacao"]
 description: "Enquadramento, luz, foco e sequência: uma conferência prática antes de enviar fotos de avaliações manuscritas."
@@ -46,13 +47,6 @@ Antes de enviar, veja se:
 - as páginas estão completas e na ordem certa.
 
 A CogniScion recebe fotos e PDFs de trabalhos manuscritos. Preparar arquivos legíveis ajuda a manter disponível a informação que já está no papel. [Conheça a CogniScion](https://cogniscion.com/).
-
-## Referências
-
-Estas recomendações adaptam cuidados de captura e conferência usados na digitalização de documentos. Não são requisitos de resolução da CogniScion nem uma promessa de desempenho de leitura por IA.
-
-- [The National Archives — Digitisation at The National Archives](https://cdn.nationalarchives.gov.uk/documents/information-management/digitisation-at-the-national-archives.pdf): legibilidade, enquadramento, nitidez e luminosidade.
-- [National Records of Scotland — Requirements for Submission of Digitised Records for Archival Preservation](https://www.nrscotland.gov.uk/publications/requirements-for-submission-of-digitised-records-for-archival-preservation/): integridade e sequência das páginas.
 {% endraw %}
 
-<!-- cm-revision ffdb65e75b7be506a64374e5fd5ece31803a784af2ef0b751da318b4d8cf9b75 -->
+<!-- cm-revision 0336a252abcf69a025204819a4d9e9af75301e62e0758a8d1eebe40fb5bc1d31 -->
