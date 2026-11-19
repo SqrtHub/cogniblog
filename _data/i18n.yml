@@ -112,6 +112,7 @@ en:
     post: {label: Post, plural: Posts}
   categories:
     anuncios: Announcements
+    assessment: Assessment
     avaliacao: Assessment
     pratica-docente: Teaching practice
     tecnologia: Technology
