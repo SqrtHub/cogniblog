@@ -1,5 +1,5 @@
 {%- comment -%}
-  Feed Atom de um idioma (feed.xml, en/feed.xml), no formato do jekyll-feed, só com os posts desse idioma.
+  Feed Atom de um idioma (feed.xml em inglês, pt/feed.xml), no formato do jekyll-feed, só com os posts desse idioma.
   O jekyll-feed não gera o próprio feed.xml quando este arquivo existe.
   Serialização: título e resumo são HTML (type="html") escapado para XML, sem CDATA; o conteúdo vai em CDATA com
   cada "]]>" dividido, para que nenhum texto válido encerre o CDATA ou suma do feed.

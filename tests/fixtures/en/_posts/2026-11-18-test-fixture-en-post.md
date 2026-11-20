@@ -6,7 +6,7 @@ tags: ["test-fixture"]
 description: "Synthetic English page used only by the blog's structural tests."
 lang: "en"
 locale: "en_US"
-permalink: "/en/test-fixture-en-post/"
+permalink: "/test-fixture-en-post/"
 translation_key: "fotos-de-provas-respostas-legiveis"
 ---
 {% raw %}
@@ -14,7 +14,7 @@ This is a synthetic test page. It exists only to check the English layout of the
 
 ## A section heading
 
-A second paragraph with a [link to the blog](/en/) and enough words to estimate a reading time.
+A second paragraph with a [link to the blog](/) and enough words to estimate a reading time.
 {% endraw %}
 
 <!-- cm-revision 0be15ef6d072643976b4a85fea3f32ddf623eea431967b82b6b285ca9fab53de -->

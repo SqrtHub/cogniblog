@@ -7,7 +7,7 @@ format: guide
 description: "Turn a learning objective into criteria, performance levels, and useful feedback, with an original rubric example and a planning checklist."
 lang: "en"
 locale: "en_US"
-permalink: "/en/grading-rubric-open-ended-responses/"
+permalink: "/grading-rubric-open-ended-responses/"
 translation_key: "guia-criterios-correcao-rubrica-respostas-abertas"
 ---
 {% raw %}
@@ -121,4 +121,4 @@ The example and descriptors in this guide are original. The references below sup
 - [Education Endowment Foundation — Teacher Feedback to Improve Pupil Learning](https://d2tic4wvo1iusb.cloudfront.net/production/eef-guidance-reports/feedback/Teacher_Feedback_to_Improve_Pupil_Learning.pdf?v=1749201654): success criteria, specific feedback, and opportunities to act on feedback.
 {% endraw %}
 
-<!-- cm-revision 43de7e67a2aff4fdd3aabdfa96b29abe21c071769142161d4d55eacefb55620c -->
+<!-- cm-revision 1a47cb0cdb8e7fe8e40d8e2edd9eaf0ea7a229f3f1ab88a010b6640e2ec43395 -->

@@ -3,7 +3,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
   {%- if page.title == nil and _lang != site.lang %}
-  {%- comment %} jekyll-seo-tag completaria o título com a descrição do site em português. {% endcomment %}
+  {%- comment %} jekyll-seo-tag completaria o título com a descrição do site no idioma padrão (inglês). {% endcomment %}
   <title>{{ site.title }} | {{ _t.site_description }}</title>
   {%- seo title=false %}
   {%- else %}

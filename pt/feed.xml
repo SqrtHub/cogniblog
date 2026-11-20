@@ -1,6 +1,6 @@
 ---
 layout: null
-permalink: /en/feed.xml
+permalink: /pt/feed.xml
 sitemap: false
 ---
 {% include atom.xml %}
