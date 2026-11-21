@@ -5,7 +5,7 @@ categories: ["tecnologia"]
 tags: ["test-fixture"]
 lang: "en"
 locale: "en_US"
-permalink: "/en/feed-test-sequence/"
+permalink: "/feed-test-sequence/"
 translation_key: "teste-feed-sequencia"
 ---
 {% raw %}

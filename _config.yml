@@ -1,13 +1,13 @@
 title: Blog CogniScion
 description: >-
-  Ideias, notas e aprendizados da CogniScion.
+  Ideas, notes and lessons from CogniScion.
 author:
   name: CogniScion
   type: Organization
   url: "https://cogniscion.com/"
 email: ""
-lang: pt-BR
-locale: pt_BR
+lang: en
+locale: en_US
 timezone: America/Sao_Paulo
 
 url: "https://blog.cogniscion.com"
@@ -29,8 +29,10 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
-# URLs sem data: /<slug>/ em português e /en/<slug>/ em inglês (a data fica só nos metadados).
-permalink: /:title/
+# Inglês é o idioma padrão, na raiz: /, /guides/, /about/, /feed.xml e posts em /<slug-em-inglês>/ (o
+# permalink vem no front matter do post, gerado pelo CogniManager). Português fica em /pt/: /pt/, /pt/guias/,
+# /pt/sobre/, /pt/feed.xml e posts em /pt/<slug>/ (este permalink; sem data: a data fica só nos metadados).
+permalink: /pt/:title/
 
 defaults:
   - scope:
@@ -46,12 +48,16 @@ defaults:
       type: posts
     values:
       layout: post
-  # Páginas em inglês (en/). Posts em inglês trazem lang/locale/permalink no próprio front matter.
+      # Posts sem idioma no front matter são os originais em português. Posts em inglês trazem
+      # lang/locale/permalink/translation_key no próprio front matter, que tem precedência.
+      lang: pt-BR
+      locale: pt_BR
+  # Páginas em português (pt/).
   - scope:
-      path: "en"
+      path: "pt"
     values:
-      lang: en
-      locale: en_US
+      lang: pt-BR
+      locale: pt_BR
 
 exclude:
   - Gemfile

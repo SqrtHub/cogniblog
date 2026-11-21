@@ -51,26 +51,30 @@ description: "Resumo curto para cards e mecanismos de busca."
 ```
 
 - O `layout: post` é aplicado automaticamente.
-- As URLs não têm data: o post fica em `/<slug>/` (o slug vem do nome do arquivo). A data continua no
-  front matter, no nome do arquivo e nos metadados.
+- As URLs não têm data: um post em português fica em `/pt/<slug>/` (o slug vem do nome do arquivo). A data
+  continua no front matter, no nome do arquivo e nos metadados.
 - Textos da interface, rótulos de temas e formatos (Guia/Post), por idioma, ficam em `_data/i18n.yml`.
 - Os botões de ação (navbar e chamada no fim das páginas) dizem "Teste o CogniScion" / "Try CogniScion" e levam à
   criação de conta (`signup_url` no `_config.yml`). O `product_url` (site) continua sendo a identidade da marca
   no rodapé e nos metadados.
 - **Destaques da home:** à esquerda aparece o guia mais recente (`format: guide`). À direita, o post comum mais recente. Nos dois casos, um item com `featured: true` tem preferência. Enquanto não houver guia publicado, o espaço do guia mostra "Guias em preparação".
-- A página `/guias/` lista apenas os posts com `format: guide`.
-- **Inglês:** as páginas em inglês ficam em `en/` (`/en/`, `/en/guides/`, `/en/about/`, `/en/feed.xml`). Um post
-  em inglês é a tradução de um post em português e traz no front matter:
+- As páginas de guias (`/guides/`, `/pt/guias/`) listam apenas os posts com `format: guide` do idioma.
+- **Idiomas e endereços:** o inglês é o idioma padrão, na raiz: `/`, `/guides/`, `/about/`, `/feed.xml` e posts em
+  `/<slug-em-inglês>/`. O português fica em `pt/`: `/pt/`, `/pt/guias/`, `/pt/sobre/`, `/pt/feed.xml` e posts em
+  `/pt/<slug>/` (`permalink: /pt/:title/` e os defaults de `lang`/`locale` no `_config.yml`). Os endereços antigos
+  (`/<slug-em-português>/`, `/en/...`, `/guias/`, `/sobre/`) não são mantidos: não há alias nem redirecionamento.
+  Um post em inglês é a tradução de um post em português e traz no front matter:
 
   ```yaml
   lang: "en"
   locale: "en_US"
-  permalink: "/en/<slug-em-ingles>/"
+  permalink: "/<slug-em-ingles>/"
   translation_key: "<slug do post em português>"
   ```
 
   Cada página liga para o seu equivalente no outro idioma (seletor PT/EN e `hreflang`, com `x-default` na versão
-  em português). Sem equivalente, a outra opção aparece desativada e explicada. As listas, os destaques, o
+  em inglês). Um slug em inglês não pode ser o de uma página da raiz (`pt`, `en`, `guides`, `about`, `feed`,
+  `assets`, `404`, `sitemap`, `robots`), e os slugs são únicos entre os dois idiomas. Sem equivalente, a outra opção aparece desativada e explicada. As listas, os destaques, o
   "Leia também" e o feed de cada idioma mostram só os posts desse idioma. Os posts são publicados pelo
   CogniManager (que gera esse front matter); não edite os arquivos dele à mão.
 

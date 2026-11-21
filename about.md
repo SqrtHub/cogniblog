@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About
-permalink: /en/about/
+permalink: /about/
 translation_key: about
 description: Ideas, notes and lessons from CogniScion.
 ---

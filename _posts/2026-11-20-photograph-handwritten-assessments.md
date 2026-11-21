@@ -6,7 +6,7 @@ tags: ["handwritten-assessments", "legibility", "teacher-routines"]
 description: "A practical check of framing, lighting, handwriting, and page order before uploading photos of handwritten assessments."
 lang: "en"
 locale: "en_US"
-permalink: "/en/photograph-handwritten-assessments/"
+permalink: "/photograph-handwritten-assessments/"
 translation_key: "fotos-de-provas-respostas-legiveis"
 ---
 {% raw %}
@@ -52,4 +52,4 @@ Before uploading, check that:
 CogniScion accepts photos and PDFs of handwritten work. Preparing readable files helps preserve the information already on the page. [Learn about CogniScion](https://cogniscion.com/).
 {% endraw %}
 
-<!-- cm-revision 7493919e1b5136935b8cce0b4c19981145ced0a428a3bc852ab8e7ffcbd04811 -->
+<!-- cm-revision 21496866a3183ccad2cc83bf8477203e9548e319e58a88a2842f28a819dcbc90 -->

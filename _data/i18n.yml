@@ -1,4 +1,5 @@
-# Textos da interface por idioma. A chave é o `lang` da página (`site.lang` quando a página não define um).
+# Textos da interface por idioma. A chave é o `lang` da página (`site.lang`, inglês, quando a página não define
+# um; posts e páginas em pt/ recebem pt-BR pelos defaults do _config.yml).
 # Posts em inglês têm `lang: en` e `translation_key: <slug do post em português>` no front matter; o post em
 # português correspondente é o equivalente exibido no seletor de idioma e nos links hreflang.
 #
@@ -7,10 +8,10 @@
 pt-BR:
   code: PT
   name: Português
-  home_url: /
-  guides_url: /guias/
-  about_url: /sobre/
-  feed_url: /feed.xml
+  home_url: /pt/
+  guides_url: /pt/guias/
+  about_url: /pt/sobre/
+  feed_url: /pt/feed.xml
   site_description: Ideias, notas e aprendizados da CogniScion.
   skip_link: Pular para o conteúdo
   menu_open: Abrir menu
@@ -80,10 +81,10 @@ pt-BR:
 en:
   code: EN
   name: English
-  home_url: /en/
-  guides_url: /en/guides/
-  about_url: /en/about/
-  feed_url: /en/feed.xml
+  home_url: /
+  guides_url: /guides/
+  about_url: /about/
+  feed_url: /feed.xml
   site_description: Ideas, notes and lessons from CogniScion.
   skip_link: Skip to content
   menu_open: Open menu

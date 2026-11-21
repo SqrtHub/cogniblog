@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Verificações estruturais do site gerado (português em /, inglês em /en/).
+# Verificações estruturais do site gerado (inglês, o idioma padrão, na raiz; português em /pt/).
 # Uso: bundle exec jekyll build && bundle exec ruby tests/check_site.rb [_site]
 # Com posts em inglês de teste (tests/fixtures/en, nunca publicados): veja o README.
 
@@ -63,7 +63,7 @@ all_posts = Dir[ROOT.join("_posts/*.md")].sort.map do |f|
   y, m, d, slug = path.basename(".md").to_s.match(/\A(\d{4})-(\d{2})-(\d{2})-(.+)\z/).captures
   date = fm["date"].respond_to?(:to_time) ? fm["date"].to_time : Time.new(y.to_i, m.to_i, d.to_i)
   lang = fm["lang"] || PT
-  url = lang == EN ? "/en/#{slug}/" : "/#{slug}/"
+  url = lang == EN ? fm["permalink"].to_s : "/pt/#{slug}/"
   fm.merge("slug" => slug, "lang" => lang, "url" => url, "file" => file_of(url), "time" => date,
            "day" => fm["date"].respond_to?(:strftime) ? fm["date"].strftime("%Y-%m-%d") : "#{y}-#{m}-#{d}",
            "topic" => topic_of(fm))
@@ -81,18 +81,20 @@ by_lang[EN].each do |e|
   peer_of[e["url"]] = pt["url"]
   peer_of[pt["url"]] = e["url"]
 end
-PAGE_PAIRS = { "/" => "/en/", "/guias/" => "/en/guides/", "/sobre/" => "/en/about/" }.freeze
+PAGE_PAIRS = { "/pt/" => "/", "/pt/guias/" => "/guides/", "/pt/sobre/" => "/about/" }.freeze
+# Endereços da raiz que pertencem a páginas do site (um post em inglês com esse slug colidiria com elas).
+RESERVED_ROOT = %w[pt en guides about feed assets 404 sitemap robots].freeze
 PAGE_PAIRS.each { |a, b| peer_of[a] = b; peer_of[b] = a }
 
 def lang_of_url(url)
-  url.start_with?("/en/") ? EN : PT
+  url.start_with?("/pt/") ? PT : EN
 end
 
 pages = Dir[SITE.join("**/*.html")].map { |f| Pathname.new(f).relative_path_from(SITE).to_s }.sort
 
 # Rotas
-%w[index.html sobre/index.html 404.html guias/index.html feed.xml sitemap.xml robots.txt CNAME
-   en/index.html en/guides/index.html en/about/index.html en/feed.xml].each do |f|
+%w[index.html about/index.html 404.html guides/index.html feed.xml sitemap.xml robots.txt CNAME
+   pt/index.html pt/guias/index.html pt/sobre/index.html pt/feed.xml].each do |f|
   check("existe #{f}") { SITE.join(f).file? }
 end
 check("CNAME é blog.cogniscion.com") { SITE.join("CNAME").read.strip == "blog.cogniscion.com" }
@@ -100,10 +102,24 @@ all_posts.each do |p|
   check("post sem data na URL: #{p['url']}") { SITE.join(p["file"]).file? }
 end
 check("nenhuma rota com data (/AAAA/...)") do
-  [SITE, SITE.join("en")].all? { |dir| dir.children.none? { |c| c.directory? && c.basename.to_s =~ /\A\d{4}\z/ } }
+  [SITE, SITE.join("pt")].all? { |dir| dir.children.none? { |c| c.directory? && c.basename.to_s =~ /\A\d{4}\z/ } }
+end
+check("nenhuma saída nem link no antigo prefixo /en/") do
+  old = %r{(href="|<loc>|<id>|"url":"|"@id":"|"item": "|"url": ")(#{Regexp.escape(BASE_URL)})?/en/}
+  !SITE.join("en").exist? && Dir[SITE.join("**/*.{html,xml}")].none? { |f| File.read(f) =~ old }
+end
+check("posts em português não têm mais endereço na raiz (sem alias nem redirecionamento)") do
+  by_lang_pt = all_posts.select { |p| p["lang"] == PT }
+  by_lang_pt.none? { |p| SITE.join(p["slug"]).exist? }
+end
+check("post em inglês: permalink do front matter é /<slug>/, na raiz") do
+  all_posts.select { |p| p["lang"] == EN }.all? { |p| p["permalink"] == "/#{p['slug']}/" }
+end
+check("slug de post em inglês não colide com páginas da raiz") do
+  all_posts.select { |p| p["lang"] == EN }.none? { |p| RESERVED_ROOT.include?(p["slug"]) }
 end
 check("nenhum link para URL com data") do
-  dated = %r{(href="|<loc>|<id>|"url":"|"@id":"|"item": ")(#{Regexp.escape(BASE_URL)})?/(en/)?\d{4}/\d{2}/\d{2}/}
+  dated = %r{(href="|<loc>|<id>|"url":"|"@id":"|"item": ")(#{Regexp.escape(BASE_URL)})?/(en/|pt/)?\d{4}/\d{2}/\d{2}/}
   Dir[SITE.join("**/*.{html,xml}")].none? { |f| File.read(f) =~ dated }
 end
 check("todos os posts no idioma certo (pt-BR ou en)") { all_posts.all? { |p| [PT, EN].include?(p["lang"]) } }
@@ -122,7 +138,7 @@ check("sitemap inclui as páginas dos dois idiomas e todos os posts") do
   (PAGE_PAIRS.to_a.flatten + all_posts.map { |p| p["url"] }).all? { |u| locs.include?(BASE_URL + u) }
 end
 check("sitemap não inclui 404 nem feeds") { locs.none? { |u| u.include?("404") || u.end_with?(".xml") } }
-{ PT => "feed.xml", EN => "en/feed.xml" }.each do |lang, f|
+{ PT => "pt/feed.xml", EN => "feed.xml" }.each do |lang, f|
   feed = nil
   check("#{f}: XML bem formado") { feed = Nokogiri::XML(SITE.join(f).read) { |c| c.strict } }
   next unless feed
@@ -172,11 +188,11 @@ pages.each do |rel|
                     (c.first["href"] == BASE_URL + url && doc.at('meta[property="og:url"]')["content"] == BASE_URL + url))
   end
   if peer
-    check("#{rel}: hreflang recíproco (#{lang} ↔ #{lang_of_url(peer)}) e x-default em português") do
+    check("#{rel}: hreflang recíproco (#{lang} ↔ #{lang_of_url(peer)}) e x-default em inglês") do
       alts = doc.css('link[rel="alternate"][hreflang]').to_h { |l| [l["hreflang"], l["href"]] }
-      pt_url = lang == PT ? url : peer
+      en_url = lang == EN ? url : peer
       other = html(file_of(peer)).css('link[rel="alternate"][hreflang]').to_h { |l| [l["hreflang"], l["href"]] }
-      alts == { lang => BASE_URL + url, lang_of_url(peer) => BASE_URL + peer, "x-default" => BASE_URL + pt_url } &&
+      alts == { lang => BASE_URL + url, lang_of_url(peer) => BASE_URL + peer, "x-default" => BASE_URL + en_url } &&
         other == alts
     end
   else
